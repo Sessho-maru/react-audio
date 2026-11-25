@@ -1,8 +1,8 @@
-import { css } from '../styled-system/css'
+import { css } from '@styled-system/css'
 
-function Control() {
-  return <div className={styles.root}>CONTROL_COMES_HERE</div>
-}
+const Control = () => (
+  <div className={styles.root}>CONTROL_COMES_HERE</div>
+)
 
 const styles = {
   root: css({

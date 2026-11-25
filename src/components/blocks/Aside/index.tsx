@@ -1,8 +1,8 @@
-import { css } from '../styled-system/css'
+import { css } from '@styled-system/css'
 
-function Aside() {
-  return <div className={styles.root}>ASIDE_COMES_HERE</div>
-}
+const Aside = () => (
+  <div className={styles.root}>ASIDE_COMES_HERE</div>
+)
 
 const styles = {
   root: css({
