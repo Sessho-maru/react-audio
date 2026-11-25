@@ -6,11 +6,11 @@ const Aside = () => (
 
 const styles = {
   root: css({
-    boxSizing: 'border-box',
-    padding: '0 0.75rem',
-    height: '100%',
-    borderRight: '1.3px solid #f4511c',
-    backgroundColor: '#e8eaf6',
+    borderRight: 'border.default',
+    backgroundColor: 'bg.aside',
+    paddingInline: 'inset.md',
+    paddingBlock: '0',
+    height: 'full',
   }),
 }
 

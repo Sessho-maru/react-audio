@@ -6,12 +6,12 @@ const Control = () => (
 
 const styles = {
   root: css({
-    boxSizing: 'border-box',
-    padding: '0 0.75rem',
-    height: '100%',
+    borderBottom: 'border.default',
+    paddingInline: 'inset.md',
+    paddingBlock: '0',
     display: 'flex',
     alignItems: 'center',
-    borderBottom: '1px solid #f4511c',
+    height: 'full',
   }),
 }
 

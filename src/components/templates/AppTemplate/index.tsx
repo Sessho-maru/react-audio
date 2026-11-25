@@ -28,7 +28,7 @@ const styles = {
       "aside control"
       "aside contents"
     `,
-    height: '100vh',
+    height: 'screen',
     lgDown: {
       gridTemplateColumns: '1fr',
       gridTemplateAreas: `
@@ -54,7 +54,6 @@ const styles = {
     gridArea: 'contents',
     minWidth: '0',
     minHeight: '0',
-    paddingTop: '10px',
   }),
 }
 
