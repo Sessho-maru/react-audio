@@ -3,7 +3,7 @@ import { AudioCueContext, type Cue } from './context';
 import { parseBlob, type IAudioMetadata } from 'music-metadata';
 
 export const AudioCueProvider = ({ children }: { children: ReactNode }) => {
-  const [currentCue, setCurrentCue]  = useState<Cue | null>(null);
+  const [currentCue, setCurrentCue]  = useState<Cue>({ now: 0, next: 0 });
   const [isNowPlaying, setIsNowPlaying] = useState<boolean>(false);
   const [isShuffle, setIsShuffle] = useState<boolean>(false);
   const [isRepeat, setIsRepeat] = useState<boolean>(false);
@@ -25,7 +25,7 @@ export const AudioCueProvider = ({ children }: { children: ReactNode }) => {
     if (currentCue && isNowPlaying) {
       forward(currentCue.now);
     }
-  }, [currentCue, isNowPlaying]);
+  }, [currentCue]);
 
   const forward = async (now: number) => {
     if (pausedAtRef.current !== 0) {
@@ -43,6 +43,11 @@ export const AudioCueProvider = ({ children }: { children: ReactNode }) => {
 
   const cueNext = (timeElapsed: number = 0) => {
     clearTimeout(timeoutRef.current);
+    
+    if (currentCue.next > filesRef.current.length - 1 || currentCue.next === 0) {
+      return;
+    }
+
     timeoutRef.current = setTimeout(() => {
       switch (true) {
         case isShuffle: {
@@ -54,7 +59,7 @@ export const AudioCueProvider = ({ children }: { children: ReactNode }) => {
         default: {
           pausedAtRef.current = 0;
           setCurrentCue(prev => (
-            { now: prev!.next, next: prev!.next + 1 }
+            { now: prev.next, next: prev.next + 1 }
           ));
           break;
         }
@@ -69,17 +74,16 @@ export const AudioCueProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    const now = currentCue?.now ?? 0;
-    const next = Math.min(now + 1, filesRef.current.length - 1)
+    const next = Math.min(currentCue.now + 1, filesRef.current.length - 1)
 
-    metadataRef.current = await parseBlob(filesRef.current[now]);
-    audioRef.current.src = URL.createObjectURL(filesRef.current[now]);
+    metadataRef.current = await parseBlob(filesRef.current[currentCue.now]);
+    audioRef.current.src = URL.createObjectURL(filesRef.current[currentCue.now]);
 
-    setCurrentCue({ now, next });
+    setCurrentCue({ now: currentCue.now, next });
   }
 
   const togglePlayback = () => {
-    if (isEmptyAudio() || !currentCue) {
+    if (isEmptyAudio()) {
       return;
     }
 
@@ -110,7 +114,7 @@ export const AudioCueProvider = ({ children }: { children: ReactNode }) => {
     audioRef.current.pause();
     pausedAtRef.current = 0;
 
-    setCurrentCue(null);
+    setCurrentCue({ now: 0, next: 0 });
     setIsNowPlaying(false);
   }
 

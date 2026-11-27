@@ -7,7 +7,7 @@ export type Cue = {
 }
 
 export type AudioCueContextValue = {
-  currentCue: Cue | null;
+  currentCue: Cue;
   isNowPlaying: boolean;
   metadata: IAudioMetadata;
   updateFiles: (fileList: FileList) => Promise<void>;
